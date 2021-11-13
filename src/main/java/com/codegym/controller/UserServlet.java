@@ -59,7 +59,9 @@ public class UserServlet extends HttpServlet {
                 case "delete":
                     deleteUser(request, response);
                     break;
-
+                case "test-without-tran":
+                    testWithoutTran(request,response);
+                    break;
                 default:
                     listUser(request, response);
                     break;
@@ -67,6 +69,10 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException ex) {
             throw new ServletException(ex);
         }
+    }
+
+    private void testWithoutTran(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        userDAO.insertUpdateWithoutTransaction();
     }
 
     private void listUser(HttpServletRequest request, HttpServletResponse response)
@@ -116,7 +122,6 @@ public class UserServlet extends HttpServlet {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
-
         User book = new User(id, name, email, country);
         userDAO.updateUser(book);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
@@ -133,4 +138,5 @@ public class UserServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
         dispatcher.forward(request, response);
     }
+
 }
